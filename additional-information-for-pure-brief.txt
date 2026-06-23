@@ -1,0 +1,37 @@
+Here is additional information and decisions from the owners. Please update the project brief accordingly.
+Legal status
+
+The project is now formally and legally registered in Vietnam as a commercial website. This is confirmed. Please update the Project Overview to reflect that legal status is established, not deferred.
+Online payment / stock availability
+
+When a product is in stock, online payment is available directly on the product page. When a product is out of stock, the "Add to Cart" / "Buy" button is replaced by a "Contact Us" or "Inquire" button. After the customer submits an inquiry, they receive a message confirming that a staff member will get back to them as soon as possible. Please update Phase 03 (Product Detail) and Phase 04 (Cart & Checkout) to reflect this flow.
+Office locations
+
+The team has two physical offices: one in Da Nang and one in Hue. This is relevant context for the About page and general project context. Please add this to the Project Overview.
+Return policy
+
+The number of days customers have to return an item is to be confirmed. Please add a new To-do question: "How many days does a customer have to return an item?"
+Revenue model and ethics clarification
+
+The project never asks for money from the public. People sometimes offer donations, but this is always declined. Revenue comes only from product sales. This distinction is important for the tone of the site and all public-facing copy. Please reinforce this in the Project Overview and Confirmed Decisions if not already clear enough.
+Blog and transparency reporting
+
+In addition to existing blog functionality, please add to Phase 07 (Blog / News): the team will publish a monthly and/or quarterly recap post that is publicly visible and shows how much was earned and where that money went. Full financial transparency through regular editorial content, not just the static total on the Impact page.
+Visual and content ethics
+
+This is a firm rule for the entire project: no photos of children are to be used anywhere on the site. No imagery that depicts poverty, suffering, or disadvantaged people as a hook to prompt emotional giving. The site must never look or feel like a charity appeal. Please add this as a confirmed decision and apply it as a content guideline across all relevant pages (Home, Cases & Campaigns, Blog, Impact).
+Geographic focus and growth
+
+The current focus for community support is Hue and the surrounding area, because the organization is still small. As it grows, support may expand to other locations. Please update the geographic focus note to reflect this reasoning.
+Artisans and collaborators section
+
+There must be a dedicated section on the site that recognizes the people who have contributed to making this project possible. This specifically includes people who have designed and/or created new products. This is important both ethically and for community storytelling. Please add this as a requirement — it could live on the About page or as its own section — and add it to the relevant roadmap phase.
+History of the initiative
+
+The founders and their friends have been doing this kind of community support work personally for over a decade. This year, they are making it official so that more people and more resources can participate. This context should be reflected in the About page content and in the project story. Please add it to Phase 05 (About).
+Active pillars — open question
+
+The four pillars currently listed in the To-do Questions (community support, culture & heritage, education & youth, crisis relief) need to be formally reviewed and agreed upon by the team. Please keep this as an open To-do item and add a note that the team should also consider whether any pillars need to be renamed, added, or removed based on the work they have actually been doing for the past decade.
+Photography backlog
+
+The team has a backlog of photos from past community activities. These need to be collected, reviewed, and selected for use on the site. Please add this as a To-do item: "Collect and select photos from past community activities for use across the site."
