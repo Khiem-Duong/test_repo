@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pure Community Support — Project Brief v2.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent:    #5B3A56;
+  --secondary: #8C6885;
+  --light:     #F4EEF3;
+  --text:      #1a1220;
+  --muted:     #7a6878;
+  --surface:   #ffffff;
+  --border:    rgba(91,58,86,0.15);
+  --radius:    10px;
+  --gold:      #B68A4E;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(135deg, #f7f3f6, #faf8f9, #f2edf1);
+  color: var(--text);
+  line-height: 1.55;
+  min-height: 100vh;
+}
+.container { max-width: 880px; margin: 0 auto; padding: 40px 20px; }
+
+.header {
+  background: linear-gradient(135deg, #2A1528, #3E2539);
+  border-radius: 16px;
+  padding: 40px 44px;
+  margin-bottom: 28px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(140,104,133,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 20px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -0.5px; line-height: 1.1; }
+.header-meta { text-align: right; flex-shrink: 0; }
+.version-badge { display: inline-block; background: rgba(255,255,255,0.12); color: #e8d8e6; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 6px; }
+.header-date { font-size: 12px; color: rgba(255,255,255,0.5); display: block; }
+.header-tagline { font-size: 15px; color: rgba(255,255,255,0.7); margin-bottom: 20px; max-width: 560px; }
+.header-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.header-tag { display: inline-block; background: rgba(255,255,255,0.1); color: #e2d2e0; font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.18); transition: background 0.2s ease, color 0.2s ease; cursor: default; }
+.header-tag:hover { background: var(--accent); color: #fff; }
+.header-tag.new { border-color: rgba(182,138,78,0.6); color: #f0d9a8; }
+
+.section { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); border-left: 3px solid var(--accent); margin-bottom: 14px; overflow: hidden; }
+.section.todo-section { border-left-color: var(--gold); }
+.section-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; user-select: none; gap: 1rem; }
+.section-header:hover { background: rgba(91,58,86,0.03); }
+.section-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--accent); position: relative; display: inline-block; }
+.todo-section .section-title { color: var(--gold); }
+.section-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.25s ease; }
+.section-header:hover .section-title::after { width: 100%; }
+.arrow { font-size: 11px; color: var(--muted); transition: transform 0.25s ease; flex-shrink: 0; }
+.section-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.section-body.open { max-height: 9999px; }
+.section-inner { padding: 4px 20px 18px; border-top: 1px solid var(--border); }
+
+.row { display: flex; gap: 12px; padding: 8px 6px; border-bottom: 1px solid rgba(91,58,86,0.07); transition: background 0.2s ease; border-radius: 6px; }
+.row:last-child { border-bottom: none; }
+.row:hover { background: rgba(91,58,86,0.04); }
+.row .label { min-width: 180px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--muted); padding-top: 1px; }
+.row .value { font-size: 14px; color: var(--text); }
+
+.alert { display: flex; gap: 10px; padding: 12px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 13.5px; transition: filter 0.2s ease; }
+.alert:hover { filter: brightness(0.97); }
+.alert:last-child { margin-bottom: 0; }
+.alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert.tip     { background: rgba(22,163,74,0.07);  border: 1px solid rgba(22,163,74,0.25);  color: #14532d; }
+.alert.warning { background: rgba(234,179,8,0.08);  border: 1px solid rgba(234,179,8,0.3);   color: #713f12; }
+.alert.info    { background: rgba(37,99,235,0.07);  border: 1px solid rgba(37,99,235,0.22);  color: #1e3a8a; }
+.alert.todo    { background: rgba(182,138,78,0.09); border: 1px solid rgba(182,138,78,0.3);  color: #7c4f1a; }
+.alert.arch    { background: rgba(91,58,86,0.08);   border: 1px solid rgba(91,58,86,0.25);   color: #3E2539; }
+
+.decided-list, .todo-list { list-style: none; padding: 0; }
+.decided-item, .todo-item { display: flex; gap: 10px; padding: 7px 6px; font-size: 14px; border-radius: 6px; transition: background 0.15s ease; }
+.decided-item:hover { background: rgba(22,163,74,0.05); }
+.todo-item:hover    { background: rgba(182,138,78,0.06); }
+.decided-item .icon { color: #16a34a; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+.todo-item .icon    { color: var(--gold); font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+
+.tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: default; }
+.tag:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+.tag.accent { background: var(--light); color: var(--accent); border: 1px solid rgba(91,58,86,0.2); }
+.tag.gold   { background: rgba(182,138,78,0.1); color: #7c4f1a; border: 1px solid rgba(182,138,78,0.25); }
+
+.phase-card { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.phase-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.phase-card-header { display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer; user-select: none; background: var(--surface); }
+.phase-number { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.phase-card-title { font-weight: 600; font-size: 15px; color: var(--text); flex: 1; }
+.phase-card-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.phase-meta { display: flex; align-items: center; gap: 10px; }
+.task-count { font-size: 11px; font-weight: 600; color: var(--muted); background: var(--light); padding: 3px 9px; border-radius: 20px; }
+.phase-arrow { font-size: 10px; color: var(--muted); transition: transform 0.25s ease; }
+.phase-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.phase-body.open { max-height: 9999px; }
+.phase-inner { padding: 12px 16px 16px 62px; border-top: 1px solid var(--border); background: rgba(244,238,243,0.3); }
+.task-list { list-style: none; padding: 0; }
+.task-list li { font-size: 13.5px; padding: 5px 0; border-bottom: 1px solid rgba(91,58,86,0.07); display: flex; gap: 8px; }
+.task-list li:last-child { border-bottom: none; }
+.task-list li::before { content: '·'; color: var(--accent); font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+.task-list .open-item::before { content: '◇'; color: var(--gold); font-size: 10px; margin-top: 3px; }
+.open-label { color: var(--gold); font-weight: 600; font-size: 11px; background: rgba(182,138,78,0.1); padding: 1px 7px; border-radius: 10px; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
+.new-label { color: #2E6B45; font-weight: 600; font-size: 11px; background: rgba(22,163,74,0.08); padding: 1px 7px; border-radius: 10px; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
+
+.roadmap-footer { background: var(--light); border-radius: 8px; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: var(--muted); }
+.roadmap-footer strong { color: var(--accent); font-weight: 600; }
+.roadmap-summary-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.swatch { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.swatch-dot { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+
+.status { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.status.progress { background: #FBF1DE; color: #8A6315; }
+.status.todo     { background: #EFEAEE; color: #6E6275; }
+
+.product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
+.product-category { background: var(--light); border-radius: 8px; padding: 12px 14px; }
+.product-category h4 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+.product-category ul { list-style: none; padding: 0; }
+.product-category li { font-size: 13px; padding: 3px 0; color: var(--text); border-bottom: 1px solid rgba(91,58,86,0.08); }
+.product-category li:last-child { border-bottom: none; }
+
+.spacer { height: 8px; }
+
+@media (max-width: 640px) {
+  .container { padding: 24px 14px; }
+  .header { padding: 28px 24px; }
+  .header h1 { font-size: 30px !important; }
+  .header-top { flex-direction: column; gap: 8px; }
+  .header-meta { text-align: left; }
+  .row { flex-direction: column; gap: 2px; }
+  .row .label { min-width: auto; }
+  .phase-inner { padding-left: 16px; }
+  .product-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-top">
+      <h1>Pure Community<br>Support</h1>
+      <div class="header-meta">
+        <div class="version-badge">v2.1</div>
+        <span class="header-date">June 2026</span>
+      </div>
+    </div>
+    <p class="header-tagline">A community initiative selling Hue traditional handicrafts. 50% of net profit supports disadvantaged people in Hue — with a focus on children's health, living conditions, and education.</p>
+    <div class="header-tags">
+      <span class="header-tag">Community Initiative</span>
+      <span class="header-tag">Hue, Vietnam</span>
+      <span class="header-tag">Traditional Handicrafts</span>
+      <span class="header-tag new">E-commerce</span>
+      <span class="header-tag new">Guest Checkout</span>
+      <span class="header-tag">Node.js + MySQL</span>
+      <span class="header-tag">Bilingual VI / EN</span>
+      <span class="header-tag">SEO Priority</span>
+      <span class="header-tag">Informative & Formal</span>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-overview">
+      <span class="section-title">Project Overview</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-overview">
+      <div class="section-inner">
+        <div class="row"><span class="label">Founders</span><span class="value">Lam — Co-Founder, operations and financial authority &nbsp;·&nbsp; Khiem — Co-Founder, website administration and accounting</span></div>
+        <div class="row"><span class="label">Type</span><span class="value">Community initiative. Not a charity, not a cultural project. No official registration for 3–5 years</span></div>
+        <div class="row"><span class="label">Model</span><span class="value">Sell Hue traditional handicrafts. 50% of net profit (after operating costs) goes directly to community support. 50% goes to product development</span></div>
+        <div class="row"><span class="label">Geographic focus</span><span class="value">Hue, Vietnam — specifically the outskirts. No plans to expand to other regions for at least 3 years</span></div>
+        <div class="row"><span class="label">Primary beneficiaries</span><span class="value">Disadvantaged people in Hue — with a primary focus on children's health, living conditions, and education. Also elderly, disabled, and crisis/disaster victims</span></div>
+        <div class="row"><span class="label">Beneficiary sourcing</span><span class="value">Through school principals, community authority heads, heads of orphanages, hospitals, and disadvantaged people centers in the region — plus direct individuals</span></div>
+        <div class="row"><span class="label">Beneficiary follow-up</span><span class="value">Quarterly basis</span></div>
+        <div class="row"><span class="label">Consent policy</span><span class="value">Beneficiaries give consent before being featured on the website. Cases without consent are never published</span></div>
+        <div class="row"><span class="label">Success definition</span><span class="value">Consistently and sustainably generating income to support disadvantaged people in Hue, especially children</span></div>
+        <div class="row"><span class="label">Revenue model</span><span class="value">Product sales only. No donations from the public. No payment gateway decided yet</span></div>
+        <div class="row"><span class="label">Checkout</span><span class="value">Guest checkout only. No customer accounts</span></div>
+        <div class="row"><span class="label">Finances</span><span class="value">One general bank account, opened exclusively for this purpose, controlled by Lam. Lam has sole authority on spending</span></div>
+        <div class="row"><span class="label">Public transparency</span><span class="value">Simple total showing how much has gone to community support from the profit cut. No internal ledger on the site</span></div>
+        <div class="row"><span class="label">Annual report</span><span class="value">Formal annual impact report planned</span></div>
+        <div class="row"><span class="label">Campaigns</span><span class="value">Run continuously with no funding goals. Three pilot programs already running for years under no org name. One is still planned</span></div>
+        <div class="row"><span class="label">Case-to-purchase link</span><span class="value">Customers can specify which family or individual their purchase supports. How this works at checkout is TBD</span></div>
+        <div class="row"><span class="label">Tone</span><span class="value">Informative and formal. Founders stay behind the scenes — no names or photos prominently featured</span></div>
+        <div class="row"><span class="label">Homepage feeling</span><span class="value">Products are good. Purpose is clear and kind</span></div>
+        <div class="row"><span class="label">Future plans</span><span class="value">Possibly register as social enterprise/nonprofit in 3–5 years. Target lifespan of 10–15 years or indefinitely. No press, grants, partnerships, or physical office planned</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-products">
+      <span class="section-title">Products</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-products">
+      <div class="section-inner">
+        <div class="alert info">
+          <span class="alert-icon">ℹ</span>
+          <span>Products are Hue traditional handicrafts made by a mix of local artisan partners and the founders' team. Catalog uses categories and filters (craft type, material, artisan, etc.).</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="product-grid">
+          <div class="product-category">
+            <h4>Traditional Objects</h4>
+            <ul>
+              <li>Gong</li>
+              <li>Bell</li>
+            </ul>
+          </div>
+          <div class="product-category">
+            <h4>Apparel</h4>
+            <ul>
+              <li>T-shirt</li>
+              <li>Kimono</li>
+              <li>Handkerchief</li>
+            </ul>
+          </div>
+          <div class="product-category">
+            <h4>Bags</h4>
+            <ul>
+              <li>Tote bag</li>
+              <li>Eco bag</li>
+            </ul>
+          </div>
+          <div class="product-category">
+            <h4>Home & Living</h4>
+            <ul>
+              <li>Sleep eye mask</li>
+              <li>Pillowcase</li>
+              <li>Tablecloth</li>
+            </ul>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="alert warning">
+          <span class="alert-icon">⚠</span>
+          <span>Napkin is undecided — moved to To-do Questions. Price ranges, materials, variants, and artisan sourcing per product are also pending.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMED DECISIONS -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-decisions">
+      <span class="section-title">Confirmed Decisions</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-decisions">
+      <div class="section-inner">
+        <ul class="decided-list">
+          <li class="decided-item"><span class="icon">✓</span><span>Community initiative model — not a charity, not a cultural project</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Geographic focus: Hue, Vietnam — specifically the outskirts. No expansion for at least 3 years</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Primary beneficiary focus: children's health, living conditions, and education</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>50% of net profit (after operating costs) to community support · 50% to product development</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Product sales only — no public donations</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>10 confirmed products across 4 categories: Traditional Objects, Apparel, Bags, Home & Living</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Product catalog uses categories and filters (craft type, material, artisan, etc.)</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Guest checkout only. No customer accounts</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Customers can specify which family or individual their purchase supports (how this works at checkout is TBD)</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Campaigns run continuously with no funding goals</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Cases and campaigns still live on the site, funded by the profit share</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Beneficiaries sourced through schools, community authorities, orphanages, hospitals, and direct individuals</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Beneficiary consent required before publishing any case publicly</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Quarterly follow-up with families after support is given</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>One general bank account controlled exclusively by Lam. Lam has sole spending authority</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Public transparency: simple total of how much has gone to community support. No internal ledger on the site</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Annual impact report planned</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Lam has final authority on all publishing, spending, and operational decisions</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Founders stay behind the scenes — no photos or names prominently on the site</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Tone: informative and formal. Not emotional</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Bilingual site — Vietnamese and English with separate /vi/ and /en/ URL paths for SEO</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Three admin roles: Super-admin · Editor · Viewer</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Draft → Review → Publish workflow for cases, campaigns, and blog posts</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Lam and Khiem are both Super-admin. Developer also Super-admin</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>SEO is high priority — targeting buyers of Hue handicrafts and community supporters</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Impact metrics are static and manually updated. No auto-calculation for v1</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>No registration, press, grants, partnerships, or physical office for 3–5 years</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Volunteering features fully deferred until co-owners are consulted</span></li>
+          <li class="decided-item"><span class="icon">✓</span><span>Build one page at a time. The next page only starts once the current one is fully agreed</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-brand">
+      <span class="section-title">Brand &amp; Identity</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-brand">
+      <div class="section-inner">
+        <div class="alert warning">
+          <span class="alert-icon">⚠</span>
+          <span>Current logo is provisional. A newer version is coming with the same color palette. Purple is settled — the mark itself is not final.</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="row"><span class="label">Name</span><span class="value">"Pure" — name only, story may be developed later</span></div>
+        <div class="row"><span class="label">Symbol</span><span class="value">White lotus mark above the "Pure" wordmark — lotus replaces the dot on the E. Represents purity, resilience, and the mother–son connection</span></div>
+        <div class="row"><span class="label">Wordmark</span><span class="value">"PURE" in a serif/script hybrid · "COMMUNITY SUPPORT" in a clean sans-serif beneath</span></div>
+        <div class="row">
+          <span class="label">Color palette</span>
+          <span class="value">
+            <div class="swatch-row">
+              <div class="swatch"><div class="swatch-dot" style="background:#5B3A56;"></div><span>#5B3A56 · Primary plum</span></div>
+              <div class="swatch"><div class="swatch-dot" style="background:#8C6885;"></div><span>#8C6885 · Secondary</span></div>
+              <div class="swatch"><div class="swatch-dot" style="background:#F4EEF3;"></div><span>#F4EEF3 · Light tint</span></div>
+              <div class="swatch"><div class="swatch-dot" style="background:#B68A4E;"></div><span>#B68A4E · Gold accent</span></div>
+              <div class="swatch"><div class="swatch-dot" style="background:#2A1528;"></div><span>#2A1528 · Dark header</span></div>
+            </div>
+          </span>
+        </div>
+        <div class="row"><span class="label">Tone</span><span class="value">Informative and formal. Not emotional. Purpose is clear and kind without being sentimental</span></div>
+        <div class="row"><span class="label">Positioning</span><span class="value">The product quality and cultural story come first. The community mission is context, not the sales pitch</span></div>
+        <div class="row"><span class="label">Founders on site</span><span class="value">Behind the scenes. No names or photos prominently featured</span></div>
+        <div class="row"><span class="label">Fonts (site)</span><span class="value">TBD when final brand assets arrive</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-tech">
+      <span class="section-title">Tech Stack</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-tech">
+      <div class="section-inner">
+        <div class="alert arch">
+          <span class="alert-icon">◈</span>
+          <span>Keeping the stack as vanilla as possible. Plain HTML/CSS/JS frontend, Node.js backend, MySQL. No frontend framework.</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="row"><span class="label">Frontend</span><span class="value">Plain HTML, CSS, JavaScript — no framework</span></div>
+        <div class="row"><span class="label">Backend</span><span class="value">Node.js</span></div>
+        <div class="row"><span class="label">Database</span><span class="value">MySQL</span></div>
+        <div class="row"><span class="label">Payment gateway</span><span class="value">Not decided yet. Depends on shipping destination. Consider Vietnamese (VNPay, Momo) and/or international (Stripe, PayPal)</span></div>
+        <div class="row"><span class="label">Auth</span><span class="value">Admin-only login. Guest checkout only on the public side — no customer accounts</span></div>
+        <div class="row"><span class="label">File uploads</span><span class="value">Product images, case/campaign photos, documents. Storage approach TBD</span></div>
+        <div class="row"><span class="label">i18n</span><span class="value">Separate /vi/ and /en/ URL paths. hreflang tags. Bilingual DB fields per entity</span></div>
+        <div class="row"><span class="label">SEO</span><span class="value">Semantic HTML, meta titles/descriptions per page per language, hreflang, sitemap.xml, robots.txt, Open Graph. Product pages and blog are the primary SEO surfaces</span></div>
+        <div class="row"><span class="label">Hosting</span><span class="value">Not yet decided</span></div>
+        <div class="row"><span class="label">Shipping</span><span class="value">Destination not yet decided — affects gateway and logistics choices</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-admin">
+      <span class="section-title">Admin Panel &amp; Roles</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-admin">
+      <div class="section-inner">
+        <div class="row"><span class="label">Super-admin</span><span class="value">Full access — users/roles, publish content, manage products, view orders, update financial records, analytics</span></div>
+        <div class="row"><span class="label">Editor</span><span class="value">Manage products, cases, campaigns, blog posts (draft only). Upload photos/documents. Submit for review</span></div>
+        <div class="row"><span class="label">Viewer</span><span class="value">Read-only access to dashboard, orders, and analytics. No editing or publishing</span></div>
+        <div class="row"><span class="label">Workflow</span><span class="value">Draft → Pending Review → Published. Cases, campaigns, blog posts. Products published directly by Super-admin or Editor</span></div>
+        <div class="row"><span class="label">Final publish authority</span><span class="value">Lam</span></div>
+        <div class="row"><span class="label">Initial accounts</span><span class="value">Lam — Super-admin · Khiem — Super-admin · Developer — Super-admin · Additional co-owners TBD</span></div>
+        <div class="spacer"></div>
+        <div class="alert info">
+          <span class="alert-icon">ℹ</span>
+          <span>Admin also manages: product catalog and artisan profiles, order management, profit split reporting, internal ledger for campaigns, and basic analytics dashboard.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-roadmap">
+      <span class="section-title">Page-by-Page Roadmap</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-roadmap">
+      <div class="section-inner">
+        <div class="alert tip">
+          <span class="alert-icon">✦</span>
+          <span>One page at a time. The next page only starts once the current one is fully agreed and complete.</span>
+        </div>
+        <div class="spacer"></div>
+
+        <!-- 01 Home -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(45,106,79,0.1);color:#2d6a4f;">01</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Home</div>
+              <div class="phase-card-sub">First impression. Products are good, purpose is clear and kind.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status progress">In progress</span>
+              <span class="task-count">7 req · 2 open</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Hero introducing the brand: Hue handicrafts with a community purpose</li>
+                <li>Featured products section</li>
+                <li>Brief community mission section — how buying supports Hue families</li>
+                <li>Simple total showing how much profit has gone to community support</li>
+                <li>Latest blog/news preview</li>
+                <li>Bilingual via /vi/ and /en/ paths</li>
+                <li>Semantic HTML, meta tags, Open Graph for SEO</li>
+                <li class="open-item"><span class="open-label">Open</span>Does the hero lead with the product, the cultural story, or the community purpose?</li>
+                <li class="open-item"><span class="open-label">Open</span>Which products are featured by default — newest, bestselling, or curated by admin?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 Shop -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(26,58,92,0.1);color:#1a3a5c;">02</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Shop</div>
+              <div class="phase-card-sub">Product listing across 4 categories with filters. The commercial heart of the site.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">5 req · 1 open</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Product listing page with 4 categories: Traditional Objects, Apparel, Bags, Home & Living</li>
+                <li>Filters: craft type, material, artisan, category</li>
+                <li>Each product card: photo, name, price, short description</li>
+                <li>Bilingual product names and descriptions</li>
+                <li>SEO-friendly URLs per category and product</li>
+                <li class="open-item"><span class="open-label">Open</span>Should artisans get their own profile pages linked from products, or just a filter tag?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 Product Detail -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(91,45,142,0.08);color:#5b2d8e;">03</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Product Detail</div>
+              <div class="phase-card-sub">Full product story, photos, and add-to-cart. An SEO and trust surface.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">6 req · 1 open</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Product photo gallery</li>
+                <li>Full bilingual name, description, materials, craft type</li>
+                <li>Artisan credit with brief bio or link</li>
+                <li>Price and add-to-cart button</li>
+                <li>Note that a portion of profit supports community work in Hue</li>
+                <li>SEO meta per product page (unique title, description, Open Graph image)</li>
+                <li class="open-item"><span class="open-label">Open</span>Should the product page show which specific campaign or case this product's profit supports, or just a general statement?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 Cart & Checkout -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(122,61,0,0.08);color:#7a3d00;">04</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Cart &amp; Checkout</div>
+              <div class="phase-card-sub">Guest checkout only. No customer accounts required.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">5 req · 2 open</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Cart: view items, adjust quantities, remove items</li>
+                <li>Guest checkout: name, email, shipping address — no account required</li>
+                <li>Order summary before payment confirmation</li>
+                <li>Payment via gateway (TBD)</li>
+                <li>Order confirmation page and email to customer</li>
+                <li class="open-item"><span class="open-label">Open</span>Payment gateway — Vietnamese (VNPay, Momo), international (Stripe, PayPal), or both? Depends on shipping destination</li>
+                <li class="open-item"><span class="open-label">Open</span>Shipping destination and rates — Vietnam only, international, or both?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05 About -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(45,106,79,0.1);color:#2d6a4f;">05</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">About</div>
+              <div class="phase-card-sub">The story behind the initiative. Mission, values, and the Hue connection.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">5 req · 1 open</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Introduction, vision, mission, core values</li>
+                <li>Why the initiative was created — the Hue context: culture, hardship, storms, floods</li>
+                <li>The pillars of action (final list TBD — in To-do Questions)</li>
+                <li>Brief mention of volunteers and collaborators — one paragraph, no dedicated page</li>
+                <li>Founders mentioned by role only, not by name or photo prominently</li>
+                <li class="open-item"><span class="open-label">Open</span>Whether to include full roadmap, code of conduct, and org structure — or keep it trimmed for v1</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 06 Cases & Campaigns -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(26,58,92,0.1);color:#1a3a5c;">06</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Cases &amp; Campaigns</div>
+              <div class="phase-card-sub">Community work funded by the profit split. Where buyers see their impact.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">4 req</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Campaign listing including the pilot programs: Food & Essentials Kit, Lotus Art for Healing Workshop, Youth Leadership Circle, Heritage Craft Class (3 already running, 1 planned)</li>
+                <li>Campaign detail: description, photos/documents, total community funds received, runs continuously with no goal</li>
+                <li>Individual case detail: name, story, photo, total support received. Only published with beneficiary consent</li>
+                <li>A case can stand alone or sit inside a campaign</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 07 Blog -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(91,45,142,0.08);color:#5b2d8e;">07</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Blog / News</div>
+              <div class="phase-card-sub">Craft stories, artisan features, community updates. Primary SEO surface.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">3 req</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Full blog with categories</li>
+                <li>Used for artisan features, craft stories, cultural content, campaign updates, community storytelling</li>
+                <li>Fresh content here directly supports the SEO goal — especially for Hue handicraft search terms</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 08 Impact -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(122,61,0,0.08);color:#7a3d00;">08</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Impact</div>
+              <div class="phase-card-sub">Where buyers see what their purchases have funded.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">3 req</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Simple total: how much profit has gone to community support to date</li>
+                <li>Static, manually updated metrics: families supported, children helped, cultural programs funded, artisans supported</li>
+                <li>No auto-calculation for v1 — admin updates these numbers directly</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 09 Get Involved -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(45,106,79,0.1);color:#2d6a4f;">09</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Get Involved</div>
+              <div class="phase-card-sub">A light mention of volunteers and collaborators. Nothing more for v1.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">3 req</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>One paragraph describing the role of volunteers and collaborators</li>
+                <li>A contact email for people interested in getting involved</li>
+                <li>No sign-up form. Volunteering features deferred until co-owners are consulted</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 Admin Panel -->
+        <div class="phase-card">
+          <div class="phase-card-header" onclick="togglePhase(this)">
+            <div class="phase-number" style="background:rgba(26,58,92,0.1);color:#1a3a5c;">10</div>
+            <div style="flex:1;">
+              <div class="phase-card-title">Admin Panel</div>
+              <div class="phase-card-sub">Where the team manages products, orders, content, and community work.</div>
+            </div>
+            <div class="phase-meta">
+              <span class="status todo">Not started</span>
+              <span class="task-count">11 req</span>
+              <span class="phase-arrow">▶</span>
+            </div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-inner">
+              <ul class="task-list">
+                <li>Three roles: Super-admin, Editor, Viewer with defined permissions</li>
+                <li>Draft → Pending Review → Publish workflow for cases, campaigns, blog posts</li>
+                <li>Product management: create, edit, delete products, categories, artisan profiles</li>
+                <li>Product image uploads</li>
+                <li>Order management: view and update order status</li>
+                <li>Profit split reporting: record total revenue, costs, and community support disbursements</li>
+                <li>Update the public community support total shown on Impact page</li>
+                <li>Manage cases and campaigns including photo/document uploads</li>
+                <li>Manage blog posts</li>
+                <li>Basic analytics and reporting dashboard</li>
+                <li>User and role management</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="roadmap-footer">
+          <strong>10 pages total · 7 open questions across pages</strong>
+          <div class="roadmap-summary-list">
+            <span class="tag accent">01 Home — in progress</span>
+            <span class="tag accent">02 Shop</span>
+            <span class="tag accent">03 Product Detail</span>
+            <span class="tag accent">04 Cart &amp; Checkout</span>
+            <span class="tag accent">05 About</span>
+            <span class="tag accent">06 Cases &amp; Campaigns</span>
+            <span class="tag accent">07 Blog / News</span>
+            <span class="tag accent">08 Impact</span>
+            <span class="tag accent">09 Get Involved</span>
+            <span class="tag accent">10 Admin Panel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TO-DO QUESTIONS -->
+  <div class="section todo-section">
+    <div class="section-header" onclick="toggleSection(this)" data-toggle="s-todo">
+      <span class="section-title">To-do Questions</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="section-body open" id="s-todo">
+      <div class="section-inner">
+        <div class="alert todo">
+          <span class="alert-icon">◆</span>
+          <span>These questions have been raised but not yet answered by the team. They will be resolved in future sessions and applied to the brief when ready.</span>
+        </div>
+        <div class="spacer"></div>
+        <ul class="todo-list">
+          <li class="todo-item"><span class="icon">◆</span><span>Which of the four pillars (community support, culture & heritage, education & youth, crisis relief) does the team formally agree on? Any to rename, remove, or add?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>How does customer-to-family/case linking work at checkout — a free-text note, a dropdown of active cases, or something else?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Napkin — include as a product or not?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Do any products have variants? (e.g. sizes for t-shirt and kimono, color options) — affects the data model significantly</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>What materials are the products made from? Needed for the "filter by material" feature</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Are all products handmade in Hue, or are some printed/manufactured elsewhere?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Price ranges per product or category?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Should artisans get their own profile pages linked from products, or just a filter tag?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Should a product page show which specific campaign or case its profit supports, or just a general statement?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Payment gateway — Vietnamese (VNPay, Momo), international (Stripe, PayPal), or both? Blocked by shipping destination</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Shipping destination — Vietnam only, international, or both?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>About page — include full roadmap, code of conduct, and org structure, or keep trimmed for v1?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Role assignments for additional co-owners beyond Lam, Khiem, and the developer</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>File storage approach for product images and campaign documents (local vs. cloud)</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Hosting provider</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Final logo file, hex codes, and typography once the new brand version arrives</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>What happens to the project if one of the founders needs to step away?</span></li>
+          <li class="todo-item"><span class="icon">◆</span><span>Legal and ethics questions (deferred — too early given the size and informal status of the initiative)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+function toggleSection(btn) {
+  const id = btn.getAttribute('data-toggle');
+  const body = document.getElementById(id);
+  const arrow = btn.querySelector('.arrow');
+  const isOpen = body.classList.toggle('open');
+  if (arrow) arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+}
+function togglePhase(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.phase-arrow');
+  const isOpen = body.classList.toggle('open');
+  if (arrow) arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+}
+document.querySelectorAll('.section-body.open').forEach(body => {
+  const btn = body.previousElementSibling;
+  const arrow = btn && btn.querySelector('.arrow');
+  if (arrow) arrow.style.transform = 'rotate(90deg)';
+});
+</script>
+</body>
+</html>
